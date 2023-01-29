@@ -1,18 +1,21 @@
 import * as React from 'react';
 
-import { StyleSheet, Text } from 'react-native';
-import { useCameraDevices } from 'react-native-vision-camera';
-import { Camera } from 'react-native-vision-camera';
-import { useScanBarcodes, BarcodeFormat } from 'vision-camera-code-scanner';
+import {StyleSheet, Text, View} from 'react-native';
+import {useCameraDevices} from 'react-native-vision-camera';
+import {Camera} from 'react-native-vision-camera';
+import {useScanBarcodes, BarcodeFormat} from 'vision-camera-code-scanner';
 
 export default function App() {
   const [hasPermission, setHasPermission] = React.useState(false);
   const devices = useCameraDevices();
   const device = devices.back;
 
-  const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.ALL_FORMATS], {
-    checkInverted: true,
-  });
+  const [frameProcessor, barcodes] = useScanBarcodes(
+    [BarcodeFormat.ALL_FORMATS],
+    {
+      checkInverted: true,
+    },
+  );
 
   // Alternatively you can use the underlying function:
   //
@@ -41,9 +44,9 @@ export default function App() {
           frameProcessorFps={5}
         />
         {barcodes.map((barcode, idx) => (
-          <Text key={idx} style={styles.barcodeTextURL}>
-            {barcode.displayValue}
-          </Text>
+          <View key={idx} style={styles.barcodeTextArea}>
+            <Text style={styles.barcodeTextURL}>{barcode.displayValue}</Text>
+          </View>
         ))}
       </>
     )
@@ -51,6 +54,12 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  barcodeTextArea: {
+    flexDirection:'row',
+    justifyContent: 'center',
+    backgroundColor: '#000',
+    opacity: 0.8,
+  },
   barcodeTextURL: {
     fontSize: 20,
     color: 'white',
